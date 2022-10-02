@@ -1,64 +1,62 @@
-import 'package:consulta_cep/controller/cep_controller.dart';
-import 'package:consulta_cep/model/cep.dart';
+import 'package:consulta_cep/pages/consulta_page.dart';
+import 'package:consulta_cep/pages/historico_page.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  final _cepTextController = TextEditingController();
-  String dadosCep = '';
-  Cep? cep;
+  void _goToPage(BuildContext context, Widget page) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => page,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Consulta CEP'),
+        title: const Text('App Consulta CEP'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextFormField(controller: _cepTextController, maxLength: 8),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(dadosCep),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              cep = await CepController().buscarCEP(_cepTextController.text);
-              setState(
-                () {
-                  // dadosCep = CepController;
-                },
-              );
-            },
-            child: const Text('CONSULTAR CEP'),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Divider(),
-          Visibility(
-            visible: cep != null,
-            replacement: const Text("Pesquise o CEP!"),
-            child: Column(
-              children: [
-                Text("Cep: ${cep?.cep}"),
-                Text("Logradouro: ${cep?.logradouro}"),
-                Text("Bairro: ${cep?.bairro}"),
-                Text("Localidade: ${cep?.localidade}"),
-                Text("UF: ${cep?.uf}"),
-              ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 250,
+              child: Image.asset(
+                'assets/images/location.png',
+              ),
             ),
-          )
-        ],
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 40,
+              width: 300,
+              child: ElevatedButton(
+                onPressed: () {
+                  _goToPage(context, const ConsultaPage());
+                },
+                child: const Text('PESQUISAR CEP'),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 40,
+              width: 300,
+              child: ElevatedButton(
+                onPressed: () {
+                  _goToPage(context, const HistoricoPage());
+                },
+                child: const Text('HISTÓRICO DE PESQUISA'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
