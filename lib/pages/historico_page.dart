@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import '../database/database_sqlite.dart';
 import '../model/cep.dart';
@@ -16,6 +18,7 @@ class _HistoricoPageState extends State<HistoricoPage> {
   @override
   void initState() {
     super.initState();
+    listaCep = consulta();
   }
 
   Future<List<Cep>?> consulta() async {
@@ -31,8 +34,8 @@ class _HistoricoPageState extends State<HistoricoPage> {
       appBar: AppBar(
         title: const Text('Histórico de consulta'),
       ),
-      body: FutureBuilder<List<Cep>>(
-        // future: listaCep,
+      body: FutureBuilder<List<Cep>?>(
+        // future: consulta(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
