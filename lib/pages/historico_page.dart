@@ -12,7 +12,7 @@ class HistoricoPage extends StatefulWidget {
 }
 
 class _HistoricoPageState extends State<HistoricoPage> {
-  List<Cep>? listaCep = [];
+  Future<List<Cep>?>? listaCep;
   Cep? cep;
 
   @override
@@ -23,7 +23,7 @@ class _HistoricoPageState extends State<HistoricoPage> {
 
   Future<List<Cep>?> consulta() async {
     final database = await DatabaseSqLite().openConnection();
-    List listMap = await database.rawQuery('select * from historico');
+    List listMap = await database.rawQuery('SELECT * FROM historico');
     List<Cep> listFinal = listMap.map((e) => Cep.fromMap(e)).toList();
     return listFinal;
   }
@@ -33,15 +33,21 @@ class _HistoricoPageState extends State<HistoricoPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Histórico de consulta'),
+        actions: const [],
       ),
       body: FutureBuilder<List<Cep>?>(
-        // future: consulta(),
+        future: listaCep,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
-              itemCount: listaCep!.length,
+              itemCount: snapshot.data?.length ?? 0,
               itemBuilder: (context, index) {
-                final cep = listaCep![index];
+                final cep = snapshot.data![index];
+                if (snapshot.data!.isNotEmpty) {
+                  print('Maior que zero');
+                } else if (snapshot.data!.isEmpty) {
+                  print('Menor que zero');
+                }
                 return Card(
                   elevation: 4,
                   child: ListTile(

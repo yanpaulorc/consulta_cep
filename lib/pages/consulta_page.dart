@@ -20,7 +20,8 @@ class _ConsultaPageState extends State<ConsultaPage> {
   _databaseInsert(String cep, String logradouro, String complemento,
       String bairro, String localidade, String uf) async {
     final database = await DatabaseSqLite().openConnection();
-    database.rawQuery('INSERT INTO historico values(?,?,?,?,?,?)',
+
+    database.rawQuery('INSERT INTO historico VALUES(?,?,?,?,?,?)',
         [cep, logradouro, complemento, bairro, localidade, uf]);
   }
 
@@ -103,7 +104,7 @@ class _ConsultaPageState extends State<ConsultaPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Resultado da pesquisa do CEP: ${_cepTextController.text}',
+                      'Resultado CEP: ${_cepTextController.text}',
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 18),
                     ),

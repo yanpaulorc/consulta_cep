@@ -1,4 +1,5 @@
 import 'package:consulta_cep/pages/consulta_page.dart';
+import 'package:consulta_cep/pages/historico_consulta_page.dart';
 import 'package:consulta_cep/pages/historico_page.dart';
 import 'package:flutter/material.dart';
 
@@ -53,6 +54,19 @@ class HomePage extends StatelessWidget {
                   _goToPage(context, const HistoricoPage());
                 },
                 child: const Text('HISTÓRICO DE PESQUISA'),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 40,
+              width: 300,
+              child: ElevatedButton(
+                onPressed: () {
+                  _goToPage(context, const HistoricoConsultaPage());
+                },
+                child: const Text('PESQUISAR HISTORICO'),
               ),
             ),
           ],
