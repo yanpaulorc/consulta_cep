@@ -11,15 +11,9 @@ class HistoricoConsultaPage extends StatefulWidget {
 }
 
 class _HistoricoConsultaPageState extends State<HistoricoConsultaPage> {
-  Future<List<Cep>?>? listaCep;
+  List<Cep>? listaCep;
   final _buscaController = TextEditingController();
   Cep? cep;
-
-  @override
-  void initState() {
-    super.initState();
-    // listaCep = consulta();
-  }
 
   Future<List<Cep>?> consulta(String texto) async {
     final database = await DatabaseSqLite().openConnection();
@@ -39,17 +33,25 @@ class _HistoricoConsultaPageState extends State<HistoricoConsultaPage> {
       ),
       body: Column(
         children: [
-          TextFormField(
-            onChanged: (value) {},
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                  helperText: 'Digite um trecho do endereço',
+                  labelText: 'Procure pelo endereço',
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black))),
+              onChanged: (value) {
+                consulta(value);
+              },
+            ),
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: 1,
+              itemCount: listaCep?.length,
               itemBuilder: (BuildContext context, int index) {
-                // final enderecos = listaCep?[index];
-                return const ListTile(
-                  title: Text('enderecos'),
-                );
+                final enderecos = listaCep?[index];
+                return const ListTile();
               },
             ),
           )
