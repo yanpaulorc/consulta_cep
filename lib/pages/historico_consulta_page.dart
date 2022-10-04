@@ -11,7 +11,7 @@ class HistoricoConsultaPage extends StatefulWidget {
 }
 
 class _HistoricoConsultaPageState extends State<HistoricoConsultaPage> {
-  List<Cep>? listaCep;
+  List<Cep>? listaCep = [];
   final _buscaController = TextEditingController();
   Cep? cep;
 
@@ -20,8 +20,13 @@ class _HistoricoConsultaPageState extends State<HistoricoConsultaPage> {
     List listMap = await database
         .rawQuery("SELECT * FROM historico WHERE logradouro LIKE '%$texto%'");
     List<Cep> listFinal = listMap.map((e) => Cep.fromMap(e)).toList();
-    print(listFinal[0]);
     return listFinal;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _buscaController.dispose();
   }
 
   @override
@@ -29,7 +34,6 @@ class _HistoricoConsultaPageState extends State<HistoricoConsultaPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pesquisar endereço'),
-        actions: const [],
       ),
       body: Column(
         children: [
@@ -37,21 +41,57 @@ class _HistoricoConsultaPageState extends State<HistoricoConsultaPage> {
             padding: const EdgeInsets.all(16.0),
             child: TextFormField(
               decoration: const InputDecoration(
-                  helperText: 'Digite um trecho do endereço',
-                  labelText: 'Procure pelo endereço',
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black))),
-              onChanged: (value) {
-                consulta(value);
+                helperText: 'Digite um trecho do endereço desejado',
+                labelText: 'Digite aqui...',
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red),
+                ),
+              ),
+              onChanged: (value) async {
+                if (value == '') {
+                  setState(() {
+                    listaCep?.clear();
+                  });
+                } else {
+                  listaCep = await consulta(_buscaController.text);
+                  setState(() {});
+                }
               },
             ),
           ),
+          ElevatedButton(
+            onPressed: () async {
+              if (_buscaController.text == '') {
+                setState(() {
+                  listaCep?.clear();
+                });
+              } else {
+                listaCep = await consulta(_buscaController.text);
+                setState(() {});
+              }
+            },
+            child: const Text('Clique aqui para pesquisar'),
+          ),
           Expanded(
             child: ListView.builder(
-              itemCount: listaCep?.length,
+              itemCount: listaCep?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
                 final enderecos = listaCep?[index];
-                return const ListTile();
+                return Card(
+                  child: ListTile(
+                    title: Text('${enderecos?.cep}'),
+                    subtitle: Text('${enderecos?.logradouro}'),
+                  ),
+                );
               },
             ),
           )

@@ -20,9 +20,12 @@ class _ConsultaPageState extends State<ConsultaPage> {
   _databaseInsert(String cep, String logradouro, String complemento,
       String bairro, String localidade, String uf) async {
     final database = await DatabaseSqLite().openConnection();
-
-    database.rawQuery('INSERT INTO historico VALUES(?,?,?,?,?,?)',
-        [cep, logradouro, complemento, bairro, localidade, uf]);
+    List<Map> result =
+        await database.rawQuery("SELECT * from historico WHERE cep = '$cep'");
+    if (result.isEmpty) {
+      database.rawQuery('INSERT INTO historico VALUES(?,?,?,?,?,?)',
+          [cep, logradouro, complemento, bairro, localidade, uf]);
+    }
   }
 
   @override
@@ -36,7 +39,7 @@ class _ConsultaPageState extends State<ConsultaPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 validator: (value) {
                   if (value == null || value.isEmpty) {
