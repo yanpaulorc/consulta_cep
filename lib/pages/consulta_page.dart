@@ -28,6 +28,11 @@ class _ConsultaPageState extends State<ConsultaPage> {
     }
   }
 
+  void _clearText() {
+    _cepTextController.clear();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +48,9 @@ class _ConsultaPageState extends State<ConsultaPage> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
               child: TextFormField(
+                onChanged: (value) {
+                  setState(() {});
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Favor digitar um CEP';
@@ -54,19 +62,27 @@ class _ConsultaPageState extends State<ConsultaPage> {
                 keyboardType: TextInputType.number,
                 controller: _cepTextController,
                 maxLength: 8,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
+                  suffixIcon: _cepTextController.text.isEmpty
+                      ? null
+                      : IconButton(
+                          onPressed: (() {
+                            _clearText();
+                          }),
+                          icon: const Icon(Icons.close),
+                        ),
                   helperText: 'Digite somente números',
                   labelText: 'Digite aqui o CEP desejado',
-                  border: OutlineInputBorder(
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
-                  errorBorder: OutlineInputBorder(
+                  errorBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.red),
                   ),
                 ),

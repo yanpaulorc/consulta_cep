@@ -29,6 +29,11 @@ class _HistoricoConsultaPageState extends State<HistoricoConsultaPage> {
     _buscaController.dispose();
   }
 
+  void _clearText() {
+    _buscaController.clear();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,27 +47,35 @@ class _HistoricoConsultaPageState extends State<HistoricoConsultaPage> {
             padding: const EdgeInsets.all(16.0),
             child: TextFormField(
               controller: _buscaController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                suffixIcon: _buscaController.text.isEmpty
+                    ? null
+                    : IconButton(
+                        onPressed: (() {
+                          _clearText();
+                          listaCep?.clear();
+                        }),
+                        icon: const Icon(Icons.close),
+                      ),
                 helperText: 'Digite um trecho do endereço desejado',
                 labelText: 'Digite aqui...',
-                border: OutlineInputBorder(
+                border: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                 ),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                 ),
-                errorBorder: OutlineInputBorder(
+                errorBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.red),
                 ),
               ),
               onChanged: (value) async {
-                if (value == '') {
-                  setState(() {
-                    listaCep?.clear();
-                  });
+                if (value.isEmpty) {
+                  listaCep?.clear();
+                  setState(() {});
                 } else {
                   listaCep = await consulta(_buscaController.text);
                   setState(() {});
