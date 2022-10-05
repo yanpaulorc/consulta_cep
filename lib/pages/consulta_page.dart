@@ -32,6 +32,7 @@ class _ConsultaPageState extends State<ConsultaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF0277bd),
         title: const Text('Pesquisar'),
       ),
       body: Form(
@@ -39,13 +40,14 @@ class _ConsultaPageState extends State<ConsultaPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
               child: TextFormField(
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Favor digitar um CEP';
                   } else if (value.length < 8) {
-                    return 'Digite um CEP válido';
+                    return 'Digite o CEP corretamente';
                   }
                   return null;
                 },
@@ -70,10 +72,7 @@ class _ConsultaPageState extends State<ConsultaPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(dadosCep),
-            ),
+            // Text(dadosCep),
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
@@ -100,14 +99,14 @@ class _ConsultaPageState extends State<ConsultaPage> {
             const Divider(),
             Visibility(
               visible: cep != null,
-              replacement: const Text("Pesquise o CEP desejado"),
+              replacement: const Text('Seu CEP aparecerá aqui!'),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Resultado CEP: ${_cepTextController.text}',
+                      'CEP: ${_cepTextController.text}\n',
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 18),
                     ),
@@ -115,13 +114,11 @@ class _ConsultaPageState extends State<ConsultaPage> {
                       'Logradouro: ${cep?.logradouro}',
                       style: const TextStyle(fontSize: 16),
                     ),
-                    Text('Complemento: ${cep?.complemento}',
-                        style: const TextStyle(fontSize: 16)),
                     Text('Bairro: ${cep?.bairro}',
                         style: const TextStyle(fontSize: 16)),
-                    Text('Localidade: ${cep?.localidade}',
+                    Text('Cidade: ${cep?.localidade}',
                         style: const TextStyle(fontSize: 16)),
-                    Text('UF: ${cep?.uf}',
+                    Text('Estado: ${cep?.uf}',
                         style: const TextStyle(fontSize: 16)),
                   ],
                 ),

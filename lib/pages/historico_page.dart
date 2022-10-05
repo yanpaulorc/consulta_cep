@@ -32,6 +32,7 @@ class _HistoricoPageState extends State<HistoricoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF0277bd),
         title: const Text('Histórico de consulta'),
         actions: const [],
       ),
@@ -44,28 +45,32 @@ class _HistoricoPageState extends State<HistoricoPage> {
               itemBuilder: (context, index) {
                 final cep = snapshot.data![index];
                 if (snapshot.data!.isNotEmpty) {
-                  print('Maior que zero');
-                } else if (snapshot.data!.isEmpty) {
-                  print('Menor que zero');
+                  return Card(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    elevation: 4,
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.location_city,
+                        color: Colors.black,
+                      ),
+                      title: Text(
+                        cep.cep,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        '${cep.logradouro}\nBairro: ${cep.bairro}\n${cep.localidade} / ${cep.uf}',
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w300),
+                      ),
+                    ),
+                  );
+                } else {
+                  return const Center(
+                    child: Text(
+                        'Não há nenhuma consulta registrada no histórico!'),
+                  );
                 }
-                return Card(
-                  elevation: 4,
-                  child: ListTile(
-                    leading: const Icon(
-                      Icons.location_city,
-                      color: Colors.blue,
-                    ),
-                    title: Text(
-                      cep.cep,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      '${cep.logradouro}\nBairro: ${cep.bairro}\n${cep.localidade} / ${cep.uf}',
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w300),
-                    ),
-                  ),
-                );
               },
             );
           } else {

@@ -33,6 +33,7 @@ class _HistoricoConsultaPageState extends State<HistoricoConsultaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF0277bd),
         title: const Text('Pesquisar endereço'),
       ),
       body: Column(
@@ -40,6 +41,7 @@ class _HistoricoConsultaPageState extends State<HistoricoConsultaPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextFormField(
+              controller: _buscaController,
               decoration: const InputDecoration(
                 helperText: 'Digite um trecho do endereço desejado',
                 labelText: 'Digite aqui...',
@@ -68,28 +70,23 @@ class _HistoricoConsultaPageState extends State<HistoricoConsultaPage> {
               },
             ),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              if (_buscaController.text == '') {
-                setState(() {
-                  listaCep?.clear();
-                });
-              } else {
-                listaCep = await consulta(_buscaController.text);
-                setState(() {});
-              }
-            },
-            child: const Text('Clique aqui para pesquisar'),
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: listaCep?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
                 final enderecos = listaCep?[index];
                 return Card(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  elevation: 4,
                   child: ListTile(
+                    leading: const Icon(
+                      Icons.location_on_outlined,
+                      color: Colors.black,
+                    ),
                     title: Text('${enderecos?.cep}'),
-                    subtitle: Text('${enderecos?.logradouro}'),
+                    subtitle: Text(
+                        '${enderecos?.logradouro}\n${enderecos?.bairro}\n${enderecos?.localidade} / ${enderecos!.uf}'),
                   ),
                 );
               },
