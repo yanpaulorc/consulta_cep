@@ -56,12 +56,15 @@ class _HistoricoPageState extends State<HistoricoPage> {
                       ),
                       title: Text(
                         cep.cep,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                       subtitle: Text(
                         '${cep.logradouro}\nBairro: ${cep.bairro}\n${cep.localidade} / ${cep.uf}',
                         style: const TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w300),
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300,
+                            fontSize: 16),
                       ),
                     ),
                   );

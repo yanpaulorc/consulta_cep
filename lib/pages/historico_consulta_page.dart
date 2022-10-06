@@ -97,9 +97,18 @@ class _HistoricoConsultaPageState extends State<HistoricoConsultaPage> {
                       Icons.location_on_outlined,
                       color: Colors.black,
                     ),
-                    title: Text('${enderecos?.cep}'),
+                    title: Text(
+                      '${enderecos?.cep}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
                     subtitle: Text(
-                        '${enderecos?.logradouro}\n${enderecos?.bairro}\n${enderecos?.localidade} / ${enderecos!.uf}'),
+                      '${enderecos?.logradouro}\n${enderecos?.bairro}\n${enderecos?.localidade} / ${enderecos!.uf}',
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16),
+                    ),
                   ),
                 );
               },

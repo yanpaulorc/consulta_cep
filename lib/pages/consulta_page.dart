@@ -33,6 +33,9 @@ class _ConsultaPageState extends State<ConsultaPage> {
     setState(() {});
   }
 
+  bool isVisible = false;
+  String texto = 'Seu CEP aparecerá aqui!';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +71,9 @@ class _ConsultaPageState extends State<ConsultaPage> {
                       : IconButton(
                           onPressed: (() {
                             _clearText();
+                            isVisible = false;
+                            texto = 'Seu CEP aparecerá aqui!';
+                            setState(() {});
                           }),
                           icon: const Icon(Icons.close),
                         ),
@@ -94,17 +100,26 @@ class _ConsultaPageState extends State<ConsultaPage> {
                 if (_formKey.currentState!.validate()) {
                   cep =
                       await CepController().buscarCEP(_cepTextController.text);
-                  setState(
-                    () {
-                      _databaseInsert(
-                          cep!.cep,
-                          cep!.logradouro,
-                          cep!.complemento,
-                          cep!.bairro,
-                          cep!.localidade,
-                          cep!.uf);
-                    },
-                  );
+                  if (cep == null) {
+                    print('CEP null');
+                    isVisible = false;
+                    texto = 'CEP não encontrado! Tente novamente.';
+                    setState(() {});
+                  } else if (cep != null) {
+                    print('CEP: $cep');
+                    isVisible = true;
+                    setState(
+                      () {
+                        _databaseInsert(
+                            cep!.cep,
+                            cep!.logradouro,
+                            cep!.complemento,
+                            cep!.bairro,
+                            cep!.localidade,
+                            cep!.uf);
+                      },
+                    );
+                  }
                 }
               },
               child: const Text('CLIQUE AQUI PARA CONSULTAR'),
@@ -112,10 +127,9 @@ class _ConsultaPageState extends State<ConsultaPage> {
             const SizedBox(
               height: 20,
             ),
-            const Divider(),
             Visibility(
-              visible: cep != null,
-              replacement: const Text('Seu CEP aparecerá aqui!'),
+              visible: isVisible,
+              // replacement: const Text('Seu CEP aparecerá aqui!'),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: Column(
@@ -137,6 +151,21 @@ class _ConsultaPageState extends State<ConsultaPage> {
                     Text('Estado: ${cep?.uf}',
                         style: const TextStyle(fontSize: 16)),
                   ],
+                ),
+              ),
+            ),
+            Visibility(
+              visible: !isVisible,
+              // replacement: Text(texto),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: Text(
+                  texto,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
