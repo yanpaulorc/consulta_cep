@@ -132,25 +132,23 @@ class _ConsultaPageState extends State<ConsultaPage> {
               // replacement: const Text('Seu CEP aparecerá aqui!'),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'CEP: ${_cepTextController.text}\n',
+                child: Card(
+                  margin: const EdgeInsets.all(8),
+                  elevation: 4,
+                  child: ListTile(
+                    title: Text(
+                      '${cep?.cep}',
                       style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18),
+                          fontWeight: FontWeight.bold, fontSize: 20),
                     ),
-                    Text(
-                      'Logradouro: ${cep?.logradouro}',
-                      style: const TextStyle(fontSize: 16),
+                    subtitle: Text(
+                      '${cep?.logradouro}\nBairro ${cep?.bairro}\n${cep?.localidade} / ${cep!.uf}',
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16),
                     ),
-                    Text('Bairro: ${cep?.bairro}',
-                        style: const TextStyle(fontSize: 16)),
-                    Text('Cidade: ${cep?.localidade}',
-                        style: const TextStyle(fontSize: 16)),
-                    Text('Estado: ${cep?.uf}',
-                        style: const TextStyle(fontSize: 16)),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -175,3 +173,24 @@ class _ConsultaPageState extends State<ConsultaPage> {
     );
   }
 }
+
+// Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Text(
+//                       'CEP: ${_cepTextController.text}\n',
+//                       style: const TextStyle(
+//                           fontWeight: FontWeight.bold, fontSize: 18),
+//                     ),
+//                     Text(
+//                       'Logradouro: ${cep?.logradouro}',
+//                       style: const TextStyle(fontSize: 16),
+//                     ),
+//                     Text('Bairro: ${cep?.bairro}',
+//                         style: const TextStyle(fontSize: 16)),
+//                     Text('Cidade: ${cep?.localidade}',
+//                         style: const TextStyle(fontSize: 16)),
+//                     Text('Estado: ${cep?.uf}',
+//                         style: const TextStyle(fontSize: 16)),
+//                   ],
+//                 ),
